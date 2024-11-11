@@ -7,6 +7,9 @@ import org.junit.Test;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class APITest {
 
     @BeforeClass
@@ -25,8 +28,10 @@ public class APITest {
 
     @Test
     public void deveAdicionarTarefaComSucesso() {
+        String dataAtual = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        String json = "{\"task\": \"Teste API\", \"dueDate\": \"" + dataAtual + "\"}";
         RestAssured.given()
-                .body("{\"task\": \"Teste API\", \"dueDate\": \"2024-10-02\"}")
+                .body(json)
                 .contentType(ContentType.JSON)
                 .when()
                 .post("/todo")
