@@ -52,4 +52,29 @@ public class APITest {
                 .body("message", CoreMatchers.is("Due date must not be in past"));
     }
 
+    @Test
+    public void deveRemoverTarefaComSucesso() {
+        String dataAtual = LocalDate.now().format(DateTimeFormatter.ISO_DATE);
+        String json = "{\"task\": \"Teste Test\", \"dueDate\": \"" + dataAtual + "\"}";
+        int id = RestAssured.given()
+                .body(json)
+                .contentType(ContentType.JSON)
+                .when()
+                .post("/todo")
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("id");
+
+        // remover
+        RestAssured.given()
+                .when()
+                .delete("/todo/" + id)
+                .then()
+                .statusCode(204);
+
+
+
+    }
+
 }
